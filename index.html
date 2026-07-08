@@ -1,0 +1,811 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>SocialSift | Influencer Marketing Platform</title>
+
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:Arial,Helvetica,sans-serif;scroll-behavior:smooth}
+body{background:#F5F6FC;color:#333}
+
+header{
+display:flex;
+justify-content:space-between;
+align-items:center;
+padding:18px 8%;
+background:linear-gradient(135deg,#5B4BAA,#7D73C3);
+position:sticky;
+top:0;
+z-index:1000;
+box-shadow:0 5px 20px rgba(0,0,0,.15)
+}
+
+.logo{
+display:flex;
+align-items:center;
+gap:12px
+}
+
+.logo img{
+width:55px;
+height:55px;
+border-radius:50%;
+background:white;
+padding:4px
+}
+
+.logo h1{
+color:white;
+font-size:30px
+}
+
+.logo span{
+color:#FFD54F
+}
+
+nav a{
+text-decoration:none;
+color:white;
+margin-left:20px;
+font-weight:bold
+}
+
+nav a:hover{
+color:#FFD54F
+}
+
+.btn{
+background:white;
+color:#5B4BAA;
+padding:8px 18px;
+border-radius:8px
+}
+
+.btn:hover{
+background:#FFD54F;
+color:#333
+}
+
+.hero{
+display:flex;
+justify-content:space-between;
+align-items:center;
+padding:80px 8%;
+background:linear-gradient(135deg,#5B4BAA,#7D73C3)
+}
+
+.left{
+width:50%;
+color:white
+}
+
+.left h2{
+font-size:52px;
+line-height:65px;
+margin-bottom:20px
+}
+
+.left p{
+font-size:18px;
+line-height:30px;
+margin-bottom:25px
+}
+
+.hero-buttons a{
+display:inline-block;
+padding:12px 28px;
+border-radius:8px;
+text-decoration:none;
+font-weight:bold;
+margin-right:10px
+}
+
+.primary{
+background:#FFD54F;
+color:#333
+}
+
+.secondary{
+background:white;
+color:#5B4BAA
+}
+
+.primary:hover,.secondary:hover{
+background:#FFD54F;
+color:#333
+}
+
+.right{
+width:45%
+}
+
+.right img{
+width:100%;
+border-radius:15px;
+box-shadow:0 15px 30px rgba(0,0,0,.3)
+}
+
+.title{
+text-align:center;
+font-size:36px;
+color:#5B4BAA;
+margin-top:60px
+}
+
+.sub{
+text-align:center;
+color:#666;
+margin:10px 0 40px
+}
+
+.cards{
+display:flex;
+justify-content:center;
+flex-wrap:wrap;
+gap:25px;
+padding:0 8%
+}
+
+.card{
+background:white;
+width:280px;
+padding:30px;
+border-radius:15px;
+text-align:center;
+box-shadow:0 8px 25px rgba(0,0,0,.08);
+transition:.3s
+}
+
+.card:hover{
+transform:translateY(-8px)
+}
+
+.card img{
+width:70px;
+margin-bottom:15px
+}
+
+.card h3{
+color:#5B4BAA;
+margin-bottom:10px
+}
+
+.card p{
+color:#666;
+line-height:25px
+}
+
+.stats{
+margin:70px 8%;
+background:linear-gradient(135deg,#5B4BAA,#7D73C3);
+padding:50px;
+border-radius:15px;
+display:flex;
+justify-content:space-around;
+flex-wrap:wrap;
+text-align:center
+}
+
+.stat h2{
+color:white;
+font-size:42px
+}
+
+.stat p{
+color:#eee;
+margin-top:10px
+}
+</style>
+</head>
+
+<body>
+
+<header>
+
+<div class="logo">
+<img src="frontend/dashboard/logo.png">
+<h1>Social<span>Sift</span></h1>
+</div>
+
+<nav>
+<a href="#home">Home</a>
+<a href="#features">Features</a>
+<a href="#about">About</a>
+<a href="#workflow">How It Works</a>
+<a href="#benefits">Benefits</a>
+<a class="btn" href="register.html">Register</a>
+<a class="btn" href="login.html">Login</a>
+</nav>
+
+</header>
+
+
+<section class="hero" id="home">
+
+<div class="left">
+
+<h2>Influencer Marketing Made Smarter</h2>
+
+<p>
+Manage campaigns, collaborate with influencers,
+track engagement and measure marketing performance
+using one complete platform.
+</p>
+
+<div class="hero-buttons">
+
+<a href="register.html" class="primary">
+Get Started
+</a>
+
+<a href="#features" class="secondary">
+Learn More
+</a>
+
+</div>
+
+</div>
+
+
+<div class="right">
+
+<img src="frontend/dashboard/img 2.jpg">
+
+</div>
+
+</section>
+
+
+<section id="features">
+
+<h2 class="title">
+Why Choose SocialSift?
+</h2>
+
+<p class="sub">
+Complete influencer marketing management solution
+</p>
+
+
+<div class="cards">
+
+<div class="card">
+<img src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png">
+<h3>Campaign Management</h3>
+<p>Create, manage and monitor influencer campaigns effectively.</p>
+</div>
+
+
+<div class="card">
+<img src="https://cdn-icons-png.flaticon.com/512/2922/2922510.png">
+<h3>Influencer Management</h3>
+<p>Maintain influencer profiles, platforms and performance data.</p>
+</div>
+
+
+<div class="card">
+<img src="https://cdn-icons-png.flaticon.com/512/1828/1828884.png">
+<h3>Analytics Tracking</h3>
+<p>Analyse engagement metrics and campaign performance.</p>
+</div>
+
+
+<div class="card">
+<img src="https://cdn-icons-png.flaticon.com/512/1055/1055687.png">
+<h3>Brand Collaboration</h3>
+<p>Connect brands and creators for successful campaigns.</p>
+</div>
+
+
+<div class="card">
+<img src="https://cdn-icons-png.flaticon.com/512/1041/1041916.png">
+<h3>Engagement Monitoring</h3>
+<p>Track influencer audience response and growth.</p>
+</div>
+
+
+<div class="card">
+<img src="https://cdn-icons-png.flaticon.com/512/3064/3064197.png">
+<h3>Secure Platform</h3>
+<p>Protected dashboard with secure authentication system.</p>
+</div>
+
+</div>
+
+</section>
+
+
+<section class="stats">
+
+<div class="stat">
+<h2>500+</h2>
+<p>Campaigns</p>
+</div>
+
+<div class="stat">
+<h2>10K+</h2>
+<p>Influencers</p>
+</div>
+
+<div class="stat">
+<h2>1M+</h2>
+<p>Engagements</p>
+</div>
+
+<div class="stat">
+<h2>98%</h2>
+<p>Success Rate</p>
+</div>
+
+</section>
+<section id="about" class="about">
+
+<h2 class="title">
+About SocialSift
+</h2>
+
+<p class="sub">
+A complete influencer marketing orchestration platform
+</p>
+
+<div class="about-content">
+
+<img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800">
+
+<div class="about-text">
+
+<h2>
+Empowering Brands Through Influencer Intelligence
+</h2>
+
+<p>
+SocialSift is a smart influencer marketing platform designed
+to simplify campaign management, influencer collaboration
+and performance analysis.
+</p>
+
+<p>
+The platform helps brands discover influencers, manage
+marketing campaigns, track engagement metrics and make
+data-driven decisions from a centralized dashboard.
+</p>
+
+<ul>
+
+<li>Centralized influencer campaign management</li>
+
+<li>Secure user authentication system</li>
+
+<li>Real-time engagement monitoring</li>
+
+<li>Performance-based marketing insights</li>
+
+<li>Better brand and creator collaboration</li>
+
+</ul>
+
+</div>
+
+</div>
+
+</section>
+
+
+<section id="workflow" class="workflow">
+
+<h2 class="title">
+How SocialSift Works
+</h2>
+
+<p class="sub">
+Simple workflow for effective influencer marketing
+</p>
+
+
+<div class="steps">
+
+<div class="step">
+
+<h2>01</h2>
+
+<h3>Create Campaign</h3>
+
+<p>
+Brands create campaigns with objectives,
+budgets and requirements.
+</p>
+
+</div>
+
+
+<div class="step">
+
+<h2>02</h2>
+
+<h3>Select Influencers</h3>
+
+<p>
+Influencer profiles are managed based on
+platform, followers and engagement score.
+</p>
+
+</div>
+
+
+<div class="step">
+
+<h2>03</h2>
+
+<h3>Track Engagement</h3>
+
+<p>
+Campaign participation and engagement
+metrics are monitored continuously.
+</p>
+
+</div>
+
+
+<div class="step">
+
+<h2>04</h2>
+
+<h3>Analyse Results</h3>
+
+<p>
+Performance reports help improve future
+marketing strategies.
+</p>
+
+</div>
+
+</div>
+
+</section>
+
+
+<section id="benefits" class="benefits">
+
+
+<h2 class="title">
+Why Choose SocialSift?
+</h2>
+
+<p class="sub">
+Designed for brands and influencers
+</p>
+
+
+<div class="benefit-box">
+
+
+<div>
+
+<h2>For Brands</h2>
+
+<ul>
+
+<li>Manage multiple campaigns easily</li>
+
+<li>Find suitable influencers</li>
+
+<li>Monitor campaign performance</li>
+
+<li>Improve marketing decisions</li>
+
+<li>Reduce campaign management effort</li>
+
+</ul>
+
+</div>
+
+
+<div>
+
+<h2>For Influencers</h2>
+
+<ul>
+
+<li>Showcase influencer profile</li>
+
+<li>Track engagement growth</li>
+
+<li>Connect with brand campaigns</li>
+
+<li>Improve performance visibility</li>
+
+<li>Build stronger partnerships</li>
+
+</ul>
+
+</div>
+
+
+</div>
+
+
+</section>
+
+
+<section class="gallery">
+
+
+<h2 class="title">
+SocialSift Experience
+</h2>
+
+<p class="sub">
+Modern influencer marketing environment
+</p>
+
+
+<div class="images">
+
+
+<img src="https://images.unsplash.com/photo-1556761175-b413da4baf72?w=800">
+
+
+<img src="https://images.unsplash.com/photo-1552664730-d307ca884978?w=800">
+
+
+<img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800">
+
+
+</div>
+
+
+</section>
+
+
+
+<section class="faq">
+
+
+<h2 class="title">
+Frequently Asked Questions
+</h2>
+
+
+<div class="faq-box">
+
+
+<h3>What is SocialSift?</h3>
+
+<p>
+SocialSift is an influencer marketing management platform
+that helps brands and creators manage campaigns and
+track performance.
+</p>
+
+
+<h3>Who can use SocialSift?</h3>
+
+<p>
+Brands, marketing teams and influencers can use SocialSift
+to organize collaboration and campaign activities.
+</p>
+
+
+<h3>What does the dashboard provide?</h3>
+
+<p>
+The dashboard provides account management,
+campaign tracking, influencer management and analytics.
+</p>
+
+
+<h3>How does SocialSift improve campaigns?</h3>
+
+<p>
+By analysing engagement data and campaign performance,
+SocialSift helps users make better marketing decisions.
+</p>
+
+
+</div>
+
+
+</section>
+
+
+
+<footer>
+
+
+<h2>
+SocialSift
+</h2>
+
+
+<p>
+Influencer Marketing Orchestration System
+</p>
+
+
+<p>
+Connecting Brands • Empowering Influencers • Driving Success
+</p>
+
+
+<p>
+© 2026 SocialSift. All Rights Reserved.
+</p>
+
+
+</footer>
+
+
+<style>
+
+.about{
+padding:70px 8%
+}
+
+.about-content{
+display:flex;
+align-items:center;
+gap:40px;
+margin-top:40px
+}
+
+.about-content img{
+width:45%;
+border-radius:15px
+}
+
+.about-text{
+width:55%
+}
+
+.about-text h2{
+color:#5B4BAA;
+margin-bottom:15px;
+font-size:35px
+}
+
+.about-text p{
+line-height:30px;
+color:#555;
+margin-bottom:15px
+}
+
+.about-text ul,.benefit-box ul{
+margin-top:20px;
+padding-left:20px
+}
+
+.about-text li,.benefit-box li{
+margin-bottom:12px
+}
+
+
+.workflow{
+padding:60px 8%
+}
+
+.steps{
+display:flex;
+justify-content:center;
+flex-wrap:wrap;
+gap:25px
+}
+
+.step{
+background:white;
+width:260px;
+padding:30px;
+text-align:center;
+border-radius:15px;
+box-shadow:0 8px 25px rgba(0,0,0,.08)
+}
+
+.step h2{
+color:#FFD54F;
+font-size:45px
+}
+
+.step h3{
+color:#5B4BAA;
+margin:15px
+}
+
+
+.benefits{
+padding:60px 8%
+}
+
+.benefit-box{
+display:flex;
+justify-content:center;
+gap:50px;
+margin-top:40px
+}
+
+.benefit-box div{
+background:white;
+padding:35px;
+width:350px;
+border-radius:15px;
+box-shadow:0 8px 25px rgba(0,0,0,.08)
+}
+
+.benefit-box h2{
+color:#5B4BAA;
+margin-bottom:20px
+}
+
+
+.gallery{
+padding:60px 8%;
+text-align:center
+}
+
+.images{
+display:flex;
+justify-content:center;
+gap:25px;
+flex-wrap:wrap
+}
+
+.images img{
+width:300px;
+height:200px;
+object-fit:cover;
+border-radius:15px
+}
+
+
+.faq{
+padding:60px 8%
+}
+
+.faq-box{
+background:white;
+padding:35px;
+border-radius:15px;
+box-shadow:0 8px 25px rgba(0,0,0,.08);
+margin-top:30px
+}
+
+.faq-box h3{
+color:#5B4BAA;
+margin-top:20px
+}
+
+.faq-box p{
+line-height:25px;
+color:#555;
+margin-top:10px
+}
+
+
+footer{
+background:#5B4BAA;
+color:white;
+text-align:center;
+padding:40px
+}
+
+footer h2{
+margin-bottom:10px
+}
+
+
+@media(max-width:900px){
+
+.about-content,.benefit-box{
+flex-direction:column
+}
+
+.about-content img,.about-text{
+width:100%
+}
+
+}
+
+</style>
+
+
+</body>
+</html>

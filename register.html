@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>SocialSift Register</title>
+
+<style>
+
+body{
+    margin:0;
+    font-family:Arial, Helvetica, sans-serif;
+    background-image:url("frontend/dashboard/register page.png");
+    background-repeat:no-repeat;
+    background-size:cover;
+    background-position:center;
+    min-height:100vh;
+}
+
+.container{
+    width:420px;
+    background:rgba(255,255,255,0.95);
+    padding:35px;
+    border-radius:20px;
+    box-shadow:0 0 20px lightgray;
+    margin:60px auto;
+}
+
+h1{
+    color:#5B4BAA;
+    text-align:center;
+    font-size:40px;
+    margin-bottom:20px;
+}
+
+input,select{
+    width:100%;
+    padding:14px;
+    margin-top:15px;
+    border:1px solid #ccc;
+    border-radius:10px;
+    font-size:16px;
+    box-sizing:border-box;
+}
+
+button{
+    width:100%;
+    padding:15px;
+    margin-top:20px;
+    background:#7D73C3;
+    color:white;
+    border:none;
+    border-radius:10px;
+    font-size:18px;
+    cursor:pointer;
+}
+
+button:hover{
+    background:#6558B3;
+}
+
+.error{
+    color:red;
+    margin-top:15px;
+    display:none;
+    text-align:center;
+}
+
+.success{
+    color:green;
+    margin-top:15px;
+    display:none;
+    text-align:center;
+}
+
+p{
+    text-align:center;
+}
+
+a{
+    color:#6558B3;
+    text-decoration:none;
+    font-weight:bold;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>SocialSift Registration</h1>
+
+<form id="register-form">
+
+<input type="email" id="reg-email" placeholder="Enter Email" required>
+
+<input type="password" id="reg-password" placeholder="Enter Password" required>
+
+<select id="reg-role">
+    <option value="USER">USER</option>
+    <option value="ADMIN">ADMIN</option>
+</select>
+
+<select id="reg-active">
+    <option value="true">Active</option>
+    <option value="false">Inactive</option>
+</select>
+
+<div id="error" class="error"></div>
+<div id="success" class="success"></div>
+
+<button type="submit" id="btn">Register</button>
+
+</form>
+
+<p>
+Already Registered?
+<a href="login.html">Login Here</a>
+</p>
+
+</div>
+
+<script>
+
+const API = "http://localhost:8081";
+
+document.getElementById("register-form").addEventListener("submit", async function(e){
+
+    e.preventDefault();
+
+    const email = document.getElementById("reg-email").value.trim();
+    const password = document.getElementById("reg-password").value;
+    const role = document.getElementById("reg-role").value;
+    const active = document.getElementById("reg-active").value === "true";
+
+    const error = document.getElementById("error");
+    const success = document.getElementById("success");
+    const btn = document.getElementById("btn");
+
+    error.style.display = "none";
+    success.style.display = "none";
+
+    if(!email || !password){
+        error.textContent = "Please fill all fields.";
+        error.style.display = "block";
+        return;
+    }
+
+    btn.disabled = true;
+    btn.textContent = "Registering...";
+
+    try{
+
+        const response = await fetch(API + "/auth/register",{
+            method:"POST",
+            headers:{
+                "Content-Type":"application/json"
+            },
+            body:JSON.stringify({
+                email:email,
+                password:password,
+                role:role,
+                active:active
+            })
+        });
+
+        if(response.ok){
+
+            success.textContent = "Registration Successful!";
+            success.style.display = "block";
+
+            document.getElementById("register-form").reset();
+
+            setTimeout(()=>{
+                window.location.href="login.html";
+            },1500);
+
+        }else{
+
+            const data = await response.json().catch(()=>({}));
+
+            error.textContent = data.message || "Registration Failed.";
+            error.style.display="block";
+        }
+
+    }catch(err){
+
+        error.textContent = "Cannot connect to Spring Boot Server.";
+        error.style.display="block";
+
+    }finally{
+
+        btn.disabled=false;
+        btn.textContent="Register";
+    }
+
+});
+
+</script>
+
+</body>
+</html>

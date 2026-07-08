@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>SocialSift Dashboard</title>
+
+<style>
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Arial,Helvetica,sans-serif
+}
+
+body{
+display:flex;
+background:#F4F5FB
+}
+
+.sidebar{
+width:250px;
+height:100vh;
+background:#5B4BAA;
+color:white;
+position:fixed;
+padding-top:20px
+}
+
+.sidebar h2{
+text-align:center;
+margin-bottom:30px;
+font-size:30px
+}
+
+.sidebar a{
+display:block;
+padding:16px 25px;
+color:white;
+text-decoration:none;
+font-size:17px
+}
+
+.sidebar a:hover{
+background:#7D73C3
+}
+
+.logout{
+background:#E53935;
+margin:20px;
+text-align:center;
+border-radius:8px
+}
+
+.main{
+margin-left:250px;
+width:calc(100% - 250px)
+}
+
+.header{
+height:70px;
+background:white;
+display:flex;
+justify-content:space-between;
+align-items:center;
+padding:0 30px;
+box-shadow:0 5px 15px #ddd
+}
+
+.header h1,.home h1,.card h2{
+color:#5B4BAA
+}
+
+.header button,.card button{
+background:#5B4BAA;
+color:white;
+border:0;
+padding:12px 20px;
+border-radius:8px;
+cursor:pointer
+}
+
+.home{
+padding:35px
+}
+
+.cards{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+gap:25px;
+margin-top:35px
+}
+
+.card{
+background:white;
+padding:30px;
+border-radius:15px;
+box-shadow:0 10px 20px #ddd;
+text-align:center
+}
+
+.card p{
+color:#666;
+line-height:25px;
+margin:15px 0
+}
+
+.card button:hover,.header button:hover{
+background:#47358E
+}
+
+.footer{
+margin-top:60px;
+text-align:center;
+color:#777
+}
+</style>
+</head>
+
+<body>
+
+<div class="sidebar">
+
+<h2>SocialSift</h2>
+
+<a href="dashboard.html">🏠 Dashboard</a>
+<a href="account-info.html">👤 Account Management</a>
+<a href="campaign-info.html">📢 Marketing Campaign</a>
+<a href="influencer-info.html">⭐ Influencer Profile</a>
+<a href="engagement-info.html">🤝 Campaign Engagement</a>
+<a href="metric-info.html">📊 Engagement Metrics</a>
+
+<a href="#" class="logout" onclick="logout()">Logout</a>
+
+</div>
+
+
+<div class="main">
+
+<div class="header">
+
+<h1>Admin Dashboard</h1>
+
+<button onclick="logout()">Logout</button>
+
+</div>
+
+
+<div class="home">
+
+<h1>Welcome to SocialSift</h1>
+
+<p style="margin-top:10px;color:#555;font-size:18px">
+Manage your Influencer Marketing Platform from one place.
+</p>
+
+
+<div class="cards">
+
+
+<div class="card">
+<h2>👤 Account Management</h2>
+<p>Create, update, view and manage registered users of SocialSift.</p>
+<button onclick="location.href='account-info.html'">Explore</button>
+</div>
+
+
+<div class="card">
+<h2>📢 Marketing Campaign</h2>
+<p>Create and manage influencer marketing campaigns with budgets and status.</p>
+<button onclick="location.href='campaign-info.html'">Explore</button>
+</div>
+
+
+<div class="card">
+<h2>⭐ Influencer Profile</h2>
+<p>Manage influencer profiles, platforms, followers and engagement score.</p>
+<button onclick="location.href='influencer-info.html'">Explore</button>
+</div>
+
+
+<div class="card">
+<h2>🤝 Campaign Engagement</h2>
+<p>Track influencer participation, payouts and engagement score.</p>
+<button onclick="location.href='engagement-info.html'">Explore</button>
+</div>
+
+
+<div class="card">
+<h2>📊 Engagement Metrics</h2>
+<p>View campaign analytics, metrics, anomalies and performance reports.</p>
+<button onclick="location.href='metric-info.html'">Explore</button>
+</div>
+
+
+</div>
+
+
+<div class="footer">
+
+<hr style="margin:40px 0">
+
+<p>
+© 2026 <b>SocialSift</b> | Influencer Marketing Orchestration System
+</p>
+
+<p style="margin-top:10px">
+Connecting Brands • Empowering Influencers • Driving Success
+</p>
+
+</div>
+
+
+</div>
+
+</div>
+
+
+<script>
+
+function logout(){
+
+localStorage.removeItem("token");
+localStorage.removeItem("role");
+
+alert("Logged out successfully!");
+
+window.location.href="login.html";
+
+}
+
+</script>
+
+</body>
+</html>

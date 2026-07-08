@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>SocialSift | Campaign</title>
+
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:Arial}
+body{background:#F4F5FB;padding:30px}
+
+.header{
+background:#5B4BAA;
+color:white;
+padding:20px;
+border-radius:12px;
+display:flex;
+justify-content:space-between;
+align-items:center
+}
+
+.header button{
+background:white;
+color:#5B4BAA;
+border:0;
+padding:10px 20px;
+border-radius:8px
+}
+
+.container{
+background:white;
+margin-top:30px;
+padding:30px;
+border-radius:15px;
+box-shadow:0 10px 25px #ddd
+}
+
+button{
+padding:12px 18px;
+background:#5B4BAA;
+color:white;
+border:0;
+border-radius:8px;
+cursor:pointer;
+margin:5px
+}
+
+input,textarea,select{
+width:250px;
+padding:10px;
+margin:6px;
+border:1px solid #ccc;
+border-radius:8px
+}
+
+textarea{height:80px}
+
+section{display:none;margin-top:20px}
+
+h2{color:#5B4BAA;margin-bottom:15px}
+
+.update{background:#43A047}
+.delete{background:#E53935}
+
+table{
+width:100%;
+margin-top:20px;
+border-collapse:collapse
+}
+
+th{
+background:#5B4BAA;
+color:white
+}
+
+td,th{
+padding:10px;
+border:1px solid #ddd;
+text-align:center
+}
+
+.msg{
+font-weight:bold;
+margin-top:15px
+}
+</style>
+
+</head>
+
+<body>
+
+<div class="header">
+
+<h1>📢 Marketing Campaign Management</h1>
+
+<button onclick="location.href='dashboard.html'">
+Back Dashboard
+</button>
+
+</div>
+
+<div class="container">
+
+<div>
+
+<button onclick="show('add')">Add Campaign</button>
+<button onclick="show('search')">Search Campaign</button>
+<button onclick="show('update')">Update Campaign</button>
+<button onclick="show('patch')">Patch Campaign</button>
+<button onclick="show('delete')">Delete Campaign</button>
+
+</div>
+
+<section id="add">
+
+<h2>Add Campaign</h2>
+
+<input id="title" placeholder="Campaign Title">
+
+<textarea id="description" placeholder="Campaign Description"></textarea>
+
+<input id="budgetallocation" type="number" placeholder="Budget Allocation">
+
+<input id="targetplatform" placeholder="Target Platform">
+
+<select id="status">
+<option>ACTIVE</option>
+<option>PENDING</option>
+<option>COMPLETED</option>
+</select>
+
+<br>
+
+<button onclick="addCampaign()">Add Campaign</button>
+
+</section>
+
+<section id="search">
+
+<h2>Search Campaign</h2>
+
+<input id="searchId" type="number" placeholder="Campaign ID">
+
+<button onclick="getById()">Search</button>
+
+<button onclick="getAll()">View All</button>
+
+</section>
+
+<section id="update">
+
+<h2>Update Campaign</h2>
+
+<input id="updateId" placeholder="Campaign ID">
+
+<input id="updateTitle" placeholder="Title">
+
+<textarea id="updateDescription" placeholder="Description"></textarea>
+
+<input id="updateBudget" type="number" placeholder="Budget">
+
+<input id="updatePlatform" placeholder="Platform">
+
+<select id="updateStatus">
+<option>ACTIVE</option>
+<option>PENDING</option>
+<option>COMPLETED</option>
+</select>
+
+<br>
+
+<button class="update" onclick="updateCampaign()">Update</button>
+
+</section>
+<section id="patch">
+
+<h2>Patch Campaign</h2>
+
+<input id="patchId" placeholder="Campaign ID">
+
+<input id="patchTitle" placeholder="New Title">
+
+<input id="patchBudget" type="number" placeholder="New Budget">
+
+<input id="patchPlatform" placeholder="New Platform">
+
+<select id="patchStatus">
+
+<option value="">No Status Change</option>
+<option>ACTIVE</option>
+<option>PENDING</option>
+<option>COMPLETED</option>
+
+</select>
+
+<br>
+
+<button onclick="patchCampaign()">Patch</button>
+
+</section>
+
+<section id="delete">
+
+<h2>Delete Campaign</h2>
+
+<input id="deleteId" placeholder="Campaign ID">
+
+<button class="delete" onclick="deleteCampaign()">Delete</button>
+
+</section>
+
+<div id="msg" class="msg"></div>
+
+<div id="result"></div>
+
+</div>
+
+<script>
+
+const URL="https://siftbackend-45nr.onrender.com/auth/campaign";
+const token=localStorage.getItem("token");
+
+function show(id){
+
+document.querySelectorAll("section")
+.forEach(x=>x.style.display="none");
+
+document.getElementById(id).style.display="block";
+
+msg.innerHTML="";
+
+}
+
+function message(t,c="green"){
+
+msg.innerHTML=t;
+msg.style.color=c;
+
+}
+
+async function addCampaign(){
+
+let data={
+title:title.value,
+description:description.value,
+budgetallocation:Number(budgetallocation.value),
+targetplatform:targetplatform.value,
+status:status.value
+};
+
+let r=await fetch(URL,{
+method:"POST",
+headers:{
+"Content-Type":"application/json",
+"Authorization":"Bearer "+token
+},
+body:JSON.stringify(data)
+});
+
+message(
+r.ok?"Campaign Added Successfully":"Add Failed"
+);
+
+getAll();
+
+}
+
+async function getAll(){
+
+let r=await fetch(URL,{
+headers:{
+"Authorization":"Bearer "+token
+}
+});
+
+let data=await r.json();
+
+display(data);
+
+}
+
+async function getById(){
+
+let r=await fetch(URL+"/"+searchId.value,{
+headers:{
+"Authorization":"Bearer "+token
+}
+});
+
+display([await r.json()]);
+
+}
+
+async function updateCampaign(){
+
+let id=updateId.value;
+
+let data={
+title:updateTitle.value,
+description:updateDescription.value,
+budgetallocation:Number(updateBudget.value),
+targetplatform:updatePlatform.value,
+status:updateStatus.value
+};
+
+let r=await fetch(URL+"/"+id,{
+method:"PUT",
+headers:{
+"Content-Type":"application/json",
+"Authorization":"Bearer "+token
+},
+body:JSON.stringify(data)
+});
+
+message(
+r.ok?"Campaign Updated Successfully":"Update Failed",
+r.ok?"green":"red"
+);
+
+getAll();
+
+}
+
+async function patchCampaign(){
+
+let id=patchId.value;
+
+let data={};
+
+if(patchTitle.value)
+data.title=patchTitle.value;
+
+if(patchBudget.value)
+data.budgetallocation=Number(patchBudget.value);
+
+if(patchPlatform.value)
+data.targetplatform=patchPlatform.value;
+
+if(patchStatus.value)
+data.status=patchStatus.value;
+
+let r=await fetch(URL+"/"+id,{
+method:"PATCH",
+headers:{
+"Content-Type":"application/json",
+"Authorization":"Bearer "+token
+},
+body:JSON.stringify(data)
+});
+
+message(
+r.ok?"Campaign Patched Successfully":"Patch Failed",
+r.ok?"green":"red"
+);
+
+getAll();
+
+}
+
+async function deleteCampaign(){
+
+let id=deleteId.value;
+
+let r=await fetch(URL+"/"+id,{
+method:"DELETE",
+headers:{
+"Authorization":"Bearer "+token
+}
+});
+
+message(
+r.ok?"Campaign Deleted Successfully":"Delete Failed",
+r.ok?"green":"red"
+);
+
+getAll();
+
+}
+
+function display(data){
+
+let html=`
+
+<table>
+
+<tr>
+<th>ID</th>
+<th>Title</th>
+<th>Description</th>
+<th>Budget</th>
+<th>Platform</th>
+<th>Status</th>
+</tr>
+
+`;
+
+data.forEach(c=>{
+
+html+=`
+
+<tr>
+
+<td>${c.id}</td>
+<td>${c.title}</td>
+<td>${c.description}</td>
+<td>${c.budgetallocation}</td>
+<td>${c.targetplatform}</td>
+<td>${c.status}</td>
+
+</tr>
+
+`;
+
+});
+
+html+="</table>";
+
+result.innerHTML=html;
+
+}
+
+</script>
+
+</body>
+</html>

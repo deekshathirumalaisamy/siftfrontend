@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<title>SocialSift | Engagement Info</title>
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Arial
+}
+
+body{
+background:#F4F5FB;
+padding:30px
+}
+
+.box{
+background:white;
+max-width:900px;
+margin:auto;
+padding:40px;
+border-radius:18px;
+box-shadow:0 10px 25px #ddd
+}
+
+h1{
+color:#5B4BAA;
+text-align:center;
+margin-bottom:25px
+}
+
+h2{
+color:#5B4BAA;
+margin-top:25px
+}
+
+p{
+color:#555;
+font-size:17px;
+line-height:28px;
+margin-top:10px
+}
+
+ul{
+margin:15px 0 15px 25px;
+color:#555;
+line-height:30px
+}
+
+button{
+background:#5B4BAA;
+color:white;
+border:0;
+padding:14px 25px;
+border-radius:10px;
+cursor:pointer;
+font-size:16px;
+margin-top:25px
+}
+
+button:hover{
+background:#47358E
+}
+
+.top{
+display:flex;
+justify-content:space-between;
+align-items:center;
+margin-bottom:20px
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="box">
+
+<div class="top">
+
+<h1>🤝 Campaign Engagement</h1>
+
+<button onclick="back()">
+Back Dashboard
+</button>
+
+</div>
+
+
+<p>
+Campaign Engagement module tracks influencer participation,
+engagement performance and payout details for each marketing campaign.
+</p>
+
+
+<h2>About Engagement Management</h2>
+
+<p>
+This module connects influencers with campaigns and stores
+engagement scores, campaign status and payout information.
+It helps brands measure influencer contribution and campaign success.
+</p>
+
+
+<h2>Features</h2>
+
+<ul>
+
+<li>Track influencer campaign participation</li>
+
+<li>Manage campaign engagement status</li>
+
+<li>Store engagement scores</li>
+
+<li>Calculate influencer payout details</li>
+
+<li>Monitor campaign performance</li>
+
+<li>Update engagement information</li>
+
+</ul>
+
+
+<h2>Workflow</h2>
+
+<p>
+Campaign created → Influencer assigned → Engagement recorded →
+Performance evaluated → Payout processed.
+</p>
+
+
+<button onclick="openCRUD()">
+Manage Engagement
+</button>
+
+
+</div>
+
+
+<script>
+
+function back(){
+
+location.href="dashboard.html"
+
+}
+
+function openCRUD(){
+
+location.href="engagement.html"
+
+}
+
+</script>
+
+
+</body>
+</html>

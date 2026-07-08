@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<title>SocialSift | Engagement Metric Log</title>
+
+<style>
+
+*{margin:0;padding:0;box-sizing:border-box;font-family:Arial}
+
+body{background:#F4F5FB;padding:30px}
+
+.header{
+background:#5B4BAA;
+color:white;
+padding:20px;
+border-radius:12px;
+display:flex;
+justify-content:space-between;
+align-items:center
+}
+
+.header button{
+background:white;
+color:#5B4BAA;
+border:0;
+padding:10px 20px;
+border-radius:8px
+}
+
+.container{
+background:white;
+margin-top:30px;
+padding:30px;
+border-radius:15px;
+box-shadow:0 10px 25px #ddd
+}
+
+button{
+background:#5B4BAA;
+color:white;
+border:0;
+padding:12px 18px;
+border-radius:8px;
+margin:5px;
+cursor:pointer
+}
+
+button:hover{background:#47358E}
+
+input,select{
+width:250px;
+padding:10px;
+margin:6px;
+border:1px solid #ccc;
+border-radius:8px
+}
+
+.update{background:#43A047}
+
+.delete{background:#E53935}
+
+.section{
+display:none;
+margin-top:20px
+}
+
+h2{color:#5B4BAA}
+
+table{
+width:100%;
+margin-top:20px;
+border-collapse:collapse
+}
+
+th{
+background:#5B4BAA;
+color:white
+}
+
+td,th{
+padding:10px;
+border:1px solid #ddd;
+text-align:center
+}
+
+.message{
+margin-top:15px;
+font-weight:bold
+}
+
+.success{color:green}
+
+.error{color:red}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="header">
+
+<h1>📊 Engagement Metric Log Management</h1>
+
+<button onclick="location.href='dashboard.html'">
+Dashboard
+</button>
+
+</div>
+
+<div class="container">
+
+<button onclick="show('add')">ADD METRIC</button>
+
+<button onclick="show('search')">GET METRIC</button>
+
+<button onclick="show('update')">UPDATE METRIC</button>
+
+<button onclick="show('delete')">DELETE METRIC</button>
+
+
+<div id="add" class="section">
+
+<h2>Add Metric</h2>
+
+<input id="engagementid" type="number" placeholder="Engagement ID">
+
+<input id="metrictype" placeholder="Metric Type">
+
+<input id="numericvalue" type="number" placeholder="Numeric Value">
+
+<select id="anomalydetected">
+
+<option value="false">No Anomaly</option>
+
+<option value="true">Anomaly Detected</option>
+
+</select>
+
+<br>
+
+<button onclick="addMetric()">SAVE</button>
+
+</div>
+
+
+<div id="search" class="section">
+
+<h2>Search Metric</h2>
+
+<input id="searchId" type="number" placeholder="Metric ID">
+
+<br>
+
+<button onclick="getById()">SEARCH</button>
+
+<button onclick="getAll()">VIEW ALL</button>
+
+</div>
+
+
+<div id="update" class="section">
+
+<h2>Update Metric</h2>
+
+<input id="updateId" placeholder="Metric ID">
+
+<input id="updateEngagement" type="number" placeholder="Engagement ID">
+
+<input id="updateType" placeholder="Metric Type">
+
+<input id="updateValue" type="number" placeholder="Numeric Value">
+
+<select id="updateAnomaly">
+
+<option value="false">No Anomaly</option>
+
+<option value="true">Anomaly Detected</option>
+
+</select>
+
+<br>
+
+<button class="update" onclick="updateMetric()">UPDATE</button>
+
+</div>
+
+
+<div id="delete" class="section">
+
+<h2>Delete Metric</h2>
+
+<input id="deleteId" placeholder="Metric ID">
+
+<br>
+
+<button class="delete" onclick="deleteMetric()">DELETE</button>
+
+</div>
+
+
+<p id="message" class="message"></p>
+
+<div id="result"></div>
+
+</div>
+
+<script>
+
+const URL="https://siftbackend-45nr.onrender.com/auth/metric";
+
+const token=localStorage.getItem("token");
+
+const message=document.getElementById("message");
+
+const result=document.getElementById("result");
+
+
+function show(id){
+
+document.querySelectorAll(".section")
+.forEach(x=>x.style.display="none");
+
+document.getElementById(id).style.display="block";
+
+message.innerHTML="";
+
+}
+
+
+function msg(text,type){
+
+message.innerHTML=text;
+
+message.className="message "+type;
+
+}
+
+
+async function addMetric(){
+
+let data={
+
+engagementid:Number(document.getElementById("engagementid").value),
+
+metrictype:document.getElementById("metrictype").value,
+
+numericvalue:Number(document.getElementById("numericvalue").value),
+
+anomalydetected:document.getElementById("anomalydetected").value=="true"
+
+};
+
+
+let res=await fetch(URL,{
+
+method:"POST",
+
+headers:{
+"Content-Type":"application/json",
+"Authorization":"Bearer "+token
+},
+
+body:JSON.stringify(data)
+
+});
+
+
+msg(
+res.ok?"Metric Added Successfully":"Add Failed",
+res.ok?"success":"error"
+);
+
+getAll();
+
+}
+
+
+async function getAll(){
+
+let res=await fetch(URL,{
+
+headers:{
+"Authorization":"Bearer "+token
+}
+
+});
+
+let data=await res.json();
+
+display(data);
+
+}
+
+
+async function getById(){
+
+let id=document.getElementById("searchId").value;
+
+let res=await fetch(URL+"/"+id,{
+
+headers:{
+"Authorization":"Bearer "+token
+}
+
+});
+
+
+if(res.ok){
+
+let data=await res.json();
+
+display([data]);
+
+}
+
+else{
+
+msg("Metric Not Found","error");
+
+}
+
+}
+
+
+async function updateMetric(){
+
+let id=document.getElementById("updateId").value;
+
+let data={
+
+engagementid:Number(document.getElementById("updateEngagement").value),
+
+metrictype:document.getElementById("updateType").value,
+
+numericvalue:Number(document.getElementById("updateValue").value),
+
+anomalydetected:document.getElementById("updateAnomaly").value=="true"
+
+};
+
+
+let res=await fetch(URL+"/"+id,{
+
+method:"PUT",
+
+headers:{
+"Content-Type":"application/json",
+"Authorization":"Bearer "+token
+},
+
+body:JSON.stringify(data)
+
+});
+
+
+msg(
+res.ok?"Metric Updated Successfully":"Update Failed",
+res.ok?"success":"error"
+);
+
+getAll();
+
+}
+
+
+async function deleteMetric(){
+
+let id=document.getElementById("deleteId").value;
+
+let res=await fetch(URL+"/"+id,{
+
+method:"DELETE",
+
+headers:{
+"Authorization":"Bearer "+token
+}
+
+});
+
+
+msg(
+res.ok?"Metric Deleted Successfully":"Delete Failed",
+res.ok?"success":"error"
+);
+
+getAll();
+
+}
+
+
+function display(data){
+
+let html=`
+
+<table>
+
+<tr>
+
+<th>ID</th>
+<th>Engagement ID</th>
+<th>Metric Type</th>
+<th>Value</th>
+<th>Anomaly</th>
+
+</tr>
+
+`;
+
+data.forEach(m=>{
+
+html+=`
+
+<tr>
+
+<td>${m.id}</td>
+
+<td>${m.engagementid}</td>
+
+<td>${m.metrictype}</td>
+
+<td>${m.numericvalue}</td>
+
+<td>${m.anomalydetected}</td>
+
+</tr>
+
+`;
+
+});
+
+html+="</table>";
+
+result.innerHTML=html;
+
+}
+
+</script>
+
+</body>
+</html>

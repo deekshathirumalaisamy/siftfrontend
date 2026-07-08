@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>SocialSift Login</title>
+
+<style>
+
+body{
+margin:0;
+font-family:Arial,Helvetica,sans-serif;
+background-image:url("frontend/dashboard/register page.png");
+background-repeat:no-repeat;
+background-size:cover;
+background-position:center;
+min-height:100vh
+}
+
+h1{
+text-align:center;
+color:#5B4BAA;
+font-size:48px;
+margin-top:30px;
+font-weight:bold
+}
+
+.container{
+width:420px;
+margin:40px auto;
+background:rgba(255,255,255,0.95);
+padding:35px;
+border-radius:20px;
+box-shadow:0 0 20px lightgray
+}
+
+input{
+width:100%;
+padding:14px;
+margin-top:15px;
+border:1px solid #CCCCCC;
+border-radius:10px;
+font-size:16px;
+box-sizing:border-box
+}
+
+button{
+width:100%;
+padding:15px;
+margin-top:20px;
+background:#7D73C3;
+color:white;
+border:none;
+border-radius:10px;
+font-size:20px;
+cursor:pointer
+}
+
+button:hover{
+background:#6558B3
+}
+
+p{
+text-align:center
+}
+
+a{
+color:#6558B3;
+text-decoration:none;
+font-weight:bold
+}
+
+.footer{
+text-align:center;
+margin-top:30px;
+color:#444
+}
+
+.footer h2{
+color:#5B4BAA
+}
+
+.error{
+color:red;
+margin-top:10px;
+display:none;
+text-align:center
+}
+
+</style>
+
+</head>
+
+<body>
+
+<h1>Welcome Back to SocialSift</h1>
+
+<div class="container">
+
+<form id="login-form">
+
+<input type="email" id="login-email" placeholder="Enter Email" required>
+
+<input type="password" id="login-password" placeholder="Enter Password" required>
+
+<div id="login-error" class="error"></div>
+
+<button type="submit" id="login-btn">
+Login
+</button>
+
+</form>
+
+<p>
+Don't have an account?
+<a href="register.html">Register Here</a>
+</p>
+
+</div>
+
+<div class="footer">
+
+<h2>Manage. Connect. Succeed.</h2>
+
+<p>
+Login to access your influencer campaigns and marketing dashboard.
+</p>
+
+</div>
+
+<script>
+
+const API="http://localhost:8081";
+
+document.getElementById("login-form")
+.addEventListener("submit",async function(e){
+
+e.preventDefault();
+
+const email=document.getElementById("login-email").value.trim();
+
+const password=document.getElementById("login-password").value;
+
+const error=document.getElementById("login-error");
+
+const btn=document.getElementById("login-btn");
+
+error.style.display="none";
+
+try{
+
+btn.disabled=true;
+
+btn.innerHTML="Logging in...";
+
+const response=await fetch(
+API+"/auth/login",
+{
+
+method:"POST",
+
+headers:{
+"Content-Type":"application/json"
+},
+
+body:JSON.stringify({
+
+email:email,
+
+password:password
+
+})
+
+});
+
+const data=await response.json();
+
+console.log("Login Response:",data);
+
+if(response.ok){
+
+if(data.token){
+
+localStorage.setItem(
+"token",
+data.token
+);
+
+console.log(
+"Saved Token:",
+localStorage.getItem("token")
+);
+
+alert("Login Successful");
+
+window.location.href="../dashboard/dashboard.html";
+
+}
+
+else{
+
+error.innerHTML=
+"Token not received from server";
+
+error.style.display="block";
+
+}
+
+}
+
+else{
+
+error.innerHTML=
+data.error || "Invalid Email or Password";
+
+error.style.display="block";
+
+}
+
+}
+
+catch(err){
+
+console.log(err);
+
+error.innerHTML=
+"Cannot connect to Spring Boot Server";
+
+error.style.display="block";
+
+}
+
+finally{
+
+btn.disabled=false;
+
+btn.innerHTML="Login";
+
+}
+
+});
+
+</script>
+
+</body>
+</html>

@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<title>SocialSift | Influencer Profile</title>
+
+<style>
+
+*{margin:0;padding:0;box-sizing:border-box;font-family:Arial}
+
+body{background:#F4F5FB;padding:30px}
+
+.header{
+background:#5B4BAA;
+color:white;
+padding:20px;
+border-radius:12px;
+display:flex;
+justify-content:space-between
+}
+
+.header button{
+background:white;
+color:#5B4BAA;
+border:0;
+padding:10px 20px;
+border-radius:8px
+}
+
+.container{
+background:white;
+margin-top:30px;
+padding:30px;
+border-radius:15px;
+box-shadow:0 10px 25px #ddd
+}
+
+button{
+background:#5B4BAA;
+color:white;
+border:0;
+padding:12px 18px;
+border-radius:8px;
+margin:5px;
+cursor:pointer
+}
+
+input{
+width:250px;
+padding:10px;
+margin:6px;
+border:1px solid #ccc;
+border-radius:8px
+}
+
+section{
+display:none;
+margin-top:20px
+}
+
+h2{color:#5B4BAA}
+
+.update{background:#43A047}
+
+.delete{background:#E53935}
+
+table{
+width:100%;
+margin-top:20px;
+border-collapse:collapse
+}
+
+th{
+background:#5B4BAA;
+color:white
+}
+
+td,th{
+padding:10px;
+border:1px solid #ddd;
+text-align:center
+}
+
+.msg{
+font-weight:bold;
+margin-top:15px
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="header">
+
+<h1>⭐ Influencer Profile Management</h1>
+
+<button onclick="location.href='dashboard.html'">
+Back Dashboard
+</button>
+
+</div>
+
+<div class="container">
+
+<button onclick="show('add')">Add Influencer</button>
+<button onclick="show('search')">Search Influencer</button>
+<button onclick="show('update')">Update Influencer</button>
+<button onclick="show('delete')">Delete Influencer</button>
+
+<section id="add">
+
+<h2>Add Influencer</h2>
+
+<input id="socialhandle" placeholder="Social Handle">
+
+<input id="primaryplatform" placeholder="Platform">
+
+<input id="nichecategory" placeholder="Niche Category">
+
+<input id="basefollowercount" type="number" placeholder="Followers">
+
+<input id="overallengagementscore" type="number" placeholder="Engagement Score">
+
+<br>
+
+<button onclick="addInfluencer()">Add</button>
+
+</section>
+
+<section id="search">
+
+<h2>Search Influencer</h2>
+
+<input id="searchId" placeholder="Influencer ID">
+
+<button onclick="getById()">Search</button>
+
+<button onclick="getAll()">View All</button>
+
+</section>
+
+<section id="update">
+
+<h2>Update Influencer</h2>
+
+<input id="updateId" placeholder="ID">
+
+<input id="updateHandle" placeholder="Handle">
+
+<input id="updatePlatform" placeholder="Platform">
+
+<input id="updateNiche" placeholder="Niche">
+
+<input id="updateFollowers" type="number" placeholder="Followers">
+
+<input id="updateScore" type="number" placeholder="Score">
+
+<br>
+
+<button class="update" onclick="updateInfluencer()">Update</button>
+
+</section>
+
+<section id="delete">
+
+<h2>Delete Influencer</h2>
+
+<input id="deleteId" placeholder="Influencer ID">
+
+<button class="delete" onclick="deleteInfluencer()">Delete</button>
+
+</section>
+
+<div id="msg" class="msg"></div>
+
+<div id="result"></div>
+
+</div>
+
+<script>
+
+const URL="https://siftbackend-45nr.onrender.com/auth/profile";
+const token=localStorage.getItem("token");
+
+function show(id){
+
+document.querySelectorAll("section")
+.forEach(x=>x.style.display="none");
+
+document.getElementById(id).style.display="block";
+
+msg.innerHTML="";
+
+}
+
+function message(t,c="green"){
+
+msg.innerHTML=t;
+msg.style.color=c;
+
+}
+
+async function addInfluencer(){
+
+let data={
+
+socialhandle:socialhandle.value,
+
+primaryplatform:primaryplatform.value,
+
+nichecategory:nichecategory.value,
+
+basefollowercount:Number(basefollowercount.value),
+
+overallengagementscore:Number(overallengagementscore.value)
+
+};
+
+let r=await fetch(URL,{
+
+method:"POST",
+
+headers:{
+"Content-Type":"application/json",
+"Authorization":"Bearer "+token
+},
+
+body:JSON.stringify(data)
+
+});
+
+message(r.ok?"Influencer Added":"Add Failed");
+
+getAll();
+
+}
+
+async function getAll(){
+
+let r=await fetch(URL,{
+
+headers:{
+"Authorization":"Bearer "+token
+}
+
+});
+
+let data=await r.json();
+
+display(data);
+
+}
+
+async function getById(){
+
+let id=searchId.value;
+
+let r=await fetch(URL+"/"+id,{
+
+headers:{
+"Authorization":"Bearer "+token
+}
+
+});
+
+if(r.ok){
+
+let data=await r.json();
+
+display([data]);
+
+}
+
+else{
+
+message("Influencer Not Found","red");
+
+}
+
+}
+
+async function updateInfluencer(){
+
+let id=updateId.value;
+
+let data={
+
+socialhandle:updateHandle.value,
+
+primaryplatform:updatePlatform.value,
+
+nichecategory:updateNiche.value,
+
+basefollowercount:Number(updateFollowers.value),
+
+overallengagementscore:Number(updateScore.value)
+
+};
+
+let r=await fetch(URL+"/"+id,{
+
+method:"PUT",
+
+headers:{
+"Content-Type":"application/json",
+"Authorization":"Bearer "+token
+},
+
+body:JSON.stringify(data)
+
+});
+
+message(r.ok?"Influencer Updated":"Update Failed");
+
+getAll();
+
+}
+
+async function deleteInfluencer(){
+
+let id=deleteId.value;
+
+let r=await fetch(URL+"/"+id,{
+
+method:"DELETE",
+
+headers:{
+"Authorization":"Bearer "+token
+}
+
+});
+
+message(r.ok?"Influencer Deleted":"Delete Failed");
+
+getAll();
+
+}
+
+function display(data){
+
+let html=`
+
+<table>
+
+<tr>
+<th>ID</th>
+<th>Handle</th>
+<th>Platform</th>
+<th>Niche</th>
+<th>Followers</th>
+<th>Score</th>
+</tr>
+
+`;
+
+data.forEach(i=>{
+
+html+=`
+
+<tr>
+
+<td>${i.id}</td>
+
+<td>${i.socialhandle}</td>
+
+<td>${i.primaryplatform}</td>
+
+<td>${i.nichecategory}</td>
+
+<td>${i.basefollowercount}</td>
+
+<td>${i.overallengagementscore}</td>
+
+</tr>
+
+`;
+
+});
+
+html+="</table>";
+
+result.innerHTML=html;
+
+}
+
+</script>
+
+</body>
+</html>

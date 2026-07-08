@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<title>SocialSift | Campaign Engagement</title>
+
+<style>
+
+*{margin:0;padding:0;box-sizing:border-box;font-family:Arial}
+
+body{background:#F4F5FB;padding:30px}
+
+.header{
+background:#5B4BAA;
+color:white;
+padding:20px;
+border-radius:12px;
+display:flex;
+justify-content:space-between;
+align-items:center
+}
+
+.header button{
+background:white;
+color:#5B4BAA;
+border:0;
+padding:10px 20px;
+border-radius:8px
+}
+
+.container{
+background:white;
+margin-top:30px;
+padding:30px;
+border-radius:15px;
+box-shadow:0 10px 25px #ddd
+}
+
+button{
+background:#5B4BAA;
+color:white;
+border:0;
+padding:12px 18px;
+border-radius:8px;
+margin:5px;
+cursor:pointer
+}
+
+button:hover{background:#47358E}
+
+input,select{
+width:250px;
+padding:10px;
+margin:6px;
+border:1px solid #ccc;
+border-radius:8px
+}
+
+.section{
+display:none;
+margin-top:20px
+}
+
+h2{color:#5B4BAA}
+
+.update{background:#43A047}
+
+.delete{background:#E53935}
+
+table{
+width:100%;
+margin-top:20px;
+border-collapse:collapse
+}
+
+th{
+background:#5B4BAA;
+color:white
+}
+
+td,th{
+padding:10px;
+border:1px solid #ddd;
+text-align:center
+}
+
+.message{
+margin-top:15px;
+font-weight:bold
+}
+
+.success{color:green}
+
+.error{color:red}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="header">
+
+<h1>🤝 Campaign Engagement Management</h1>
+
+<button onclick="location.href='dashboard.html'">
+Dashboard
+</button>
+
+</div>
+
+<div class="container">
+
+<button onclick="show('add')">ADD ENGAGEMENT</button>
+<button onclick="show('search')">GET ENGAGEMENT</button>
+<button onclick="show('update')">UPDATE ENGAGEMENT</button>
+<button onclick="show('delete')">DELETE ENGAGEMENT</button>
+
+<div id="add" class="section">
+
+<h2>Add Engagement</h2>
+
+<input id="influencerid" type="number" placeholder="Influencer ID">
+
+<input id="campaignid" type="number" placeholder="Campaign ID">
+
+<select id="engagementStatus">
+<option value="ACTIVE">ACTIVE</option>
+<option value="COMPLETED">COMPLETED</option>
+<option value="PENDING">PENDING</option>
+</select>
+
+<input id="totalengagementscore" type="number" placeholder="Engagement Score">
+
+<input id="payoutamount" type="number" placeholder="Payout Amount">
+
+<br>
+
+<button onclick="addEngagement()">SAVE</button>
+
+</div>
+
+<div id="search" class="section">
+
+<h2>Search Engagement</h2>
+
+<input id="searchId" type="number" placeholder="Engagement ID">
+
+<br>
+
+<button onclick="getById()">SEARCH</button>
+<button onclick="getAll()">VIEW ALL</button>
+
+</div>
+
+<div id="update" class="section">
+
+<h2>Update Engagement</h2>
+
+<input id="updateId" placeholder="ID">
+
+<input id="updateInfluencer" type="number" placeholder="Influencer ID">
+
+<input id="updateCampaign" type="number" placeholder="Campaign ID">
+
+<input id="updateStatus" placeholder="Status">
+
+<input id="updateScore" type="number" placeholder="Score">
+
+<input id="updatePayout" type="number" placeholder="Payout">
+
+<br>
+
+<button class="update" onclick="updateEngagement()">UPDATE</button>
+
+</div>
+
+<div id="delete" class="section">
+
+<h2>Delete Engagement</h2>
+
+<input id="deleteId" type="number" placeholder="Engagement ID">
+
+<br>
+
+<button class="delete" onclick="deleteEngagement()">DELETE</button>
+
+</div>
+
+<p id="message" class="message"></p>
+
+<div id="result"></div>
+
+</div>
+
+<script>
+
+const URL="https://siftbackend-45nr.onrender.com/auth/engagement";
+const token=localStorage.getItem("token");
+
+const message=document.getElementById("message");
+const result=document.getElementById("result");
+
+function show(id){
+
+document.querySelectorAll(".section")
+.forEach(x=>x.style.display="none");
+
+document.getElementById(id).style.display="block";
+
+message.innerHTML="";
+
+}
+
+function msg(text,type){
+
+message.innerHTML=text;
+message.className="message "+type;
+
+}
+
+async function addEngagement(){
+
+let data={
+
+influencerid:Number(document.getElementById("influencerid").value),
+
+campaignid:Number(document.getElementById("campaignid").value),
+
+status:document.getElementById("engagementStatus").value,
+
+totalengagementscore:Number(document.getElementById("totalengagementscore").value),
+
+payoutamount:Number(document.getElementById("payoutamount").value)
+
+};
+
+let res=await fetch(URL,{
+
+method:"POST",
+
+headers:{
+"Content-Type":"application/json",
+"Authorization":"Bearer "+token
+},
+
+body:JSON.stringify(data)
+
+});
+
+if(res.ok){
+
+msg("Engagement Added Successfully","success");
+getAll();
+
+}
+
+else{
+
+msg("Add Failed","error");
+
+}
+
+}
+
+async function getAll(){
+
+let res=await fetch(URL,{
+
+headers:{
+"Authorization":"Bearer "+token
+}
+
+});
+
+let data=await res.json();
+
+display(data);
+
+}
+
+async function getById(){
+
+let id=document.getElementById("searchId").value;
+
+let res=await fetch(URL+"/"+id,{
+
+headers:{
+"Authorization":"Bearer "+token
+}
+
+});
+
+if(res.ok){
+
+let data=await res.json();
+display([data]);
+
+}
+
+else{
+
+msg("Engagement Not Found","error");
+
+}
+
+}
+
+async function updateEngagement(){
+
+let id=updateId.value;
+
+let data={
+
+influencerid:Number(updateInfluencer.value),
+
+campaignid:Number(updateCampaign.value),
+
+status:updateStatus.value,
+
+totalengagementscore:Number(updateScore.value),
+
+payoutamount:Number(updatePayout.value)
+
+};
+
+let res=await fetch(URL+"/"+id,{
+
+method:"PUT",
+
+headers:{
+"Content-Type":"application/json",
+"Authorization":"Bearer "+token
+},
+
+body:JSON.stringify(data)
+
+});
+
+msg(
+res.ok?"Updated Successfully":"Update Failed",
+res.ok?"success":"error"
+);
+
+getAll();
+
+}
+
+async function deleteEngagement(){
+
+let id=deleteId.value;
+
+let res=await fetch(URL+"/"+id,{
+
+method:"DELETE",
+
+headers:{
+"Authorization":"Bearer "+token
+}
+
+});
+
+msg(
+res.ok?"Deleted Successfully":"Delete Failed",
+res.ok?"success":"error"
+);
+
+getAll();
+
+}
+
+function display(data){
+
+let html=`
+
+<table>
+
+<tr>
+<th>ID</th>
+<th>Influencer ID</th>
+<th>Campaign ID</th>
+<th>Status</th>
+<th>Score</th>
+<th>Payout</th>
+</tr>
+
+`;
+
+data.forEach(e=>{
+
+html+=`
+
+<tr>
+
+<td>${e.id}</td>
+<td>${e.influencerid}</td>
+<td>${e.campaignid}</td>
+<td>${e.status}</td>
+<td>${e.totalengagementscore}</td>
+<td>${e.payoutamount}</td>
+
+</tr>
+
+`;
+
+});
+
+html+="</table>";
+
+result.innerHTML=html;
+
+}
+
+</script>
+
+</body>
+</html>
