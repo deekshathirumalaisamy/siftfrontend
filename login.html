@@ -13,7 +13,7 @@
 body{
 margin:0;
 font-family:Arial,Helvetica,sans-serif;
-background-image:url("frontend/frontend/register page.png");
+background-image:url("register page.png");
 background-repeat:no-repeat;
 background-size:cover;
 background-position:center;
@@ -133,7 +133,7 @@ Login to access your influencer campaigns and marketing dashboard.
 
 <script>
 
-const API="http://localhost:8081";
+const API="https://siftbackend-45nr.onrender.com";
 
 document.getElementById("login-form")
 .addEventListener("submit",async function(e){
@@ -196,7 +196,7 @@ localStorage.getItem("token")
 
 alert("Login Successful");
 
-window.location.href="../dashboard/dashboard.html";
+window.location.href="../dashboard.html";
 
 }
 
